@@ -1,0 +1,21 @@
+# env files (keep the example)
+.env*
+!.env.example
+
+# dependencies
+node_modules/
+
+# next.js build output
+.next/
+
+# typescript
+*.tsbuildinfo
+
+# vercel
+.vercel/
+
+# macOS
+.DS_Store
+
+# next.js generated types
+next-env.d.ts
