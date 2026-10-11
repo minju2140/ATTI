@@ -1,10 +1,68 @@
-# 아띠 (Atti) - 당신의 똑똑한 친구 💙
+# 아띠 (ATTI) - 당신의 똑똑한 친구 💙
 
-> 감정 일기 + 근거 기반 액션 추천 웹앱
+> 일기를 쓰면 LLM이 감정을 정리하고, 심리학 이론(CBT·ACT)에 근거한 공감·조언과 작은 행동을 제안하는 감정 일기 웹 서비스
 
-## 🚀 시작하기
+- **데모**: https://atti-app.vercel.app
+- **개발 기간**: 2026.01.19 ~ 2026.01.23 (5일)
+- **형태**: 개인 프로젝트 · Wrtn AI 부트캠프
 
-### 개발 서버 실행
+<br>
+
+## 기획 배경
+
+1인 가구 비율이 36.1%(2024)에 이르면서, 우울하거나 낙심했을 때 속마음을 나눌 상대가 줄어들고 있습니다.
+아띠는 '친한 친구'라는 뜻의 순우리말에서 이름을 따, 언제든 마음을 털어놓을 수 있는 AI 친구를 목표로 만들었습니다.
+
+<br>
+
+## 주요 기능
+
+| 단계 | 기능 | 설명 |
+|:---:|---|---|
+| 1 | 감정 분석 | 일기에서 감정 3~5개를 라벨링하고 핵심을 요약 |
+| 2 | 공감·조언 | CBT·ACT 등 심리학 이론 태그와 함께 공감과 조언 제공 |
+| 3 | 행동 제안 | 5~15분 안에 할 수 있는 음악·활동 액션 카드 제안 |
+| 4 | 완료 체크 | 액션을 완료 체크하며 작은 성취를 누적 |
+| 5 | 기록 조회 | 날짜별 일기와 감정 태그를 캘린더·목록으로 조회 |
+| 6 | 안전장치 | 위기 신호가 감지되면 전문 도움 기관 안내 |
+
+**사용 흐름**: 감정 기록 → 분석·공감 → 행동 제안 → 완료 체크
+
+<br>
+
+## 핵심 설계
+
+**감정 체계화**
+감정 라벨 130여 개를 11개 카테고리로 묶고, 각 감정의 강도를 0.0~1.0으로 수치화했습니다.
+
+**응답 일관성 확보**
+시스템 프롬프트에 감정 인식 기준과 출력 형식을 명시하고, 응답을 JSON으로 구조화해 LLM 응답의 편차와 환각을 줄였습니다.
+
+**데이터 보호**
+- API 키는 서버에서만 사용해 브라우저에 노출되지 않습니다.
+- 일기는 서버 DB 없이 사용자 브라우저(localStorage)에만 저장됩니다.
+- 감정 분석 시 일기 내용이 Google Gemini API로 전송된다는 점을 설정 화면에서 안내합니다.
+- 백업·복원·전체 삭제 기능을 제공합니다.
+
+**배포 자동화**
+GitHub와 Vercel을 연동해 main 브랜치에 push하면 자동으로 배포됩니다.
+
+<br>
+
+## 기술 스택
+
+| 구분 | 사용 기술 |
+|---|---|
+| Framework | Next.js 16.1.2 (App Router) |
+| Language | TypeScript 5.9.3 |
+| Styling | Tailwind CSS 4.1.18 |
+| AI | Google Gemini API |
+| Deploy | Vercel |
+| Tools | Cursor, Claude, GitHub |
+
+<br>
+
+## 시작하기
 
 ```bash
 # 패키지 설치
@@ -14,37 +72,21 @@ npm install
 npm run dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 결과를 확인하세요.
+브라우저에서 http://localhost:3000 을 열어 확인하세요.
 
-### 환경 변수 설정
+### 환경 변수
 
-프로젝트 루트에 `.env.local` 파일을 생성하고 다음을 추가하세요:
+프로젝트 루트에 `.env.local` 파일을 만들고 API 키를 넣어주세요.
 
 ```env
-OPENAI_API_KEY=sk-proj-your-api-key-here
+GEMINI_API_KEY=your-api-key-here
 ```
 
 자세한 설정 방법은 [ENV_SETUP.md](./ENV_SETUP.md)를 참고하세요.
 
-## 📚 문서
+<br>
 
-자세한 기획 및 개발 가이드는 `docs/` 폴더를 참고하세요:
-
-- [아띠 MVP 기획안](docs/아띠_MVP_기획안.md)
-- [개발 시작 가이드](docs/개발_시작_가이드.md)
-- [개발 TODO 리스트](docs/개발_TODO_리스트.md)
-- [Code Architecture](docs/아띠_Code_Architecture.md)
-- [Design System](docs/아띠_Design_System.md)
-
-## 🛠️ 기술 스택
-
-- **Framework**: Next.js 16.1.2 (App Router)
-- **Language**: TypeScript 5.9.3
-- **Styling**: Tailwind CSS 4.1.18
-- **AI**: OpenAI API (GPT-3.5-turbo)
-- **Deploy**: Vercel
-
-## 📦 빌드 & 배포
+## 빌드 & 배포
 
 ```bash
 # 프로덕션 빌드
@@ -54,6 +96,25 @@ npm run build
 npm run start
 ```
 
-## 📝 라이선스
+<br>
 
-Private Project
+## 문서
+
+- [아띠 MVP 기획안](./docs/아띠_MVP_기획안.md)
+- [개발 시작 가이드](./docs/개발_시작_가이드.md)
+- [개발 TODO 리스트](./docs/개발_TODO_리스트.md)
+- [Code Architecture](./docs/아띠_Code_Architecture.md)
+- [Design System](./docs/아띠_Design_System.md)
+
+<br>
+
+## 면책
+
+아띠는 감정 기록과 자기 성찰을 돕는 도구이며, 전문적인 진단·치료·상담을 대신하지 않습니다.
+힘든 마음이 계속된다면 전문가의 도움을 받아주세요.
+
+<br>
+
+---
+
+**개발** 김민주 · [github.com/minju2140](https://github.com/minju2140)
